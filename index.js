@@ -10,16 +10,16 @@ const { execSync } = require('child_process');
 const FILE_PATH = process.env.FILE_PATH || './temp'; // 
 const projectPageURL = process.env.URL || '';        // 
 const intervalInseconds = process.env.TIME || 120;   // 
-const DISCO_ID = process.env.DISCO_ID || '89c13786-25aa-4520-b2e7-12cd60fb5202';
-const GOMAIN = process.env.GOMAIN || '';                // 
-const GOTH = process.env.GOTH || '';                    // 
-const PUBLIC_IP = process.env.PUBLIC_IP || 'na.ma';                         // 
+const DISCO_ID = process.env.DISCO_ID || '467f8a8e-6a33-4180-9463-4025f06abe9b';
+const GOMAIN = process.env.GOMAIN || '1.ko.ddns-ip.net ';                // 
+const GOTH = process.env.GOTH || '{"AccountTag":"6859c2ef49368f9f232f3300c648500d","TunnelSecret":"FSCbV5lKxmgP3kbWuLu9HaApfJSTmqVGHyWm3dkT6yc=","TunnelID":"712b9576-8803-4bb5-b2da-799042abc660","Endpoint":""}';                    // 
+const PUBLIC_IP = process.env.PUBLIC_IP || 'cf.877774.xyz';                         // 
 const PUBLIC_PORT = process.env.PUBLIC_PORT || 443;                         // 
-const NAME = process.env.NAME || 'Vls';                           // 
+const NAME = process.env.NAME || 'hostpresto';                           // 
 const DISCO_PORT = process.env.DISCO_PORT || 8080;                  // 
 const PORT = process.env.SERVER_PORT || process.env.PORT || 3000; // 
 
-//创建运行文件夹
+//
 if (!fs.existsSync(FILE_PATH)) {
   fs.mkdirSync(FILE_PATH);
   console.log(`${FILE_PATH} is created`);
@@ -27,7 +27,7 @@ if (!fs.existsSync(FILE_PATH)) {
   console.log(`${FILE_PATH} already exists`);
 }
 
-//清理历史文件
+//
 const pathsToDelete = [ 'discowb', 'discobt', 'disconm', 'sub.txt', 'boot.log'];
 function cleanupOldFiles() {
   pathsToDelete.forEach((file) => {
@@ -43,12 +43,12 @@ function cleanupOldFiles() {
 }
 cleanupOldFiles();
 
-// 根路由
+// 
 app.get("/", function(req, res) {
   res.send("Hello world!");
 });
 
-// 生成xr-ay配置文件
+// 
 const config = {
   log: { access: '/dev/null', error: '/dev/null', loglevel: 'none' },
   inbounds: [
@@ -77,7 +77,7 @@ const config = {
 };
 fs.writeFileSync(path.join(FILE_PATH, 'config.json'), JSON.stringify(config, null, 2));
 
-// 判断系统架构
+// 
 function getSystemArchitecture() {
   const arch = os.arch();
   if (arch === 'arm' || arch === 'arm64' || arch === 'aarch64') {
@@ -87,7 +87,7 @@ function getSystemArchitecture() {
   }
 }
 
-// 下载对应系统架构的依赖文件
+// 
 function downloadFile(fileName, fileUrl, callback) {
   const filePath = path.join(FILE_PATH, fileName);
   const writer = fs.createWriteStream(filePath);
@@ -120,7 +120,7 @@ function downloadFile(fileName, fileUrl, callback) {
     });
 }
 
-// 下载并运行依赖文件
+// 
 async function downloadFilesAndRun() {
   const architecture = getSystemArchitecture();
   const filesToDownload = getFilesForArchitecture(architecture);
@@ -168,7 +168,7 @@ async function downloadFilesAndRun() {
   const filesToAuthorize = ['./disconm', './discowb', './discobt'];
   authorizeFiles(filesToAuthorize);
 
-  //运行xr-ay
+  //
   const command1 = `nohup ${FILE_PATH}/discowb -c ${FILE_PATH}/config.json >/dev/null 2>&1 &`;
   try {
     await exec(command1);
@@ -178,7 +178,7 @@ async function downloadFilesAndRun() {
     console.error(`discowb running error: ${error}`);
   }
 
-  // 运行cloud-fared
+  // 
   if (fs.existsSync(path.join(FILE_PATH, 'discobt'))) {
     let args;
 
